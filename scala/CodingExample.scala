@@ -17,7 +17,20 @@ object CodeFun {
     * @return List of all numbers which are odd between [min,max]
     */
   def generateOdds(min: Int, max: Int): List[Int] = {
-    throw new NotImplementedError()
+    val retList: List[Int] = List()
+     if (min>max ) {
+       println("parameter not valid")
+       return retList
+     }
+    
+    val rangeList = (min to max).toList
+    
+    //val newList =  rangeList.map((curval: Int) => if(curval % 2 !=0) curval )
+    
+    val newList =  rangeList.filter(curval => (curval % 2 !=0) ).map(curval => curval)
+    
+    
+     return newList.asInstanceOf[List[(Int)]]
   }
 
   /**
@@ -26,7 +39,8 @@ object CodeFun {
     * @return new String which is the reversed version of input
     */
   def stringReverser(s: String): String = {
-    throw new NotImplementedError()
+    val stringRev = {s:String => (for(i<-s.length-1 to 0 by -1) yield s(i)).mkString}
+    return stringRev(s)
   }
 
   /**
@@ -36,7 +50,13 @@ object CodeFun {
     * @return Map of Word => Count
     */
   def wordFrequency(input: Seq[Seq[String]]): Map[String, Int] = {
-    throw new NotImplementedError()
+    
+     //println (input)
+     
+    val newMap = input.flatten.map(words=> (words,1)).groupBy(f=>f._1.toLowerCase()).mapValues(_.size)
+    
+     //println(newMap)
+     return newMap
   }
 
   /**
@@ -45,7 +65,14 @@ object CodeFun {
     * @return
     */
   def optionCollapse[T](l: Seq[Option[T]])(f: T => Boolean): Seq[T] = {
-    throw new NotImplementedError()
+    
+    //val seqOpt:
+//    println(l)
+    val ret:List[Int]  = l.flatten.filter(p => p.isInstanceOf[Integer] ).asInstanceOf[List[(Int)]]
+    
+    val retEvens:Seq[T] = ret.filter(curval => (curval % 2 ==0) ).map(curval => curval).asInstanceOf[Seq[(T)]]
+//    println(ret)
+    return retEvens
   }
 }
 
@@ -60,11 +87,14 @@ object TestSuite {
     * Once you write all of your tests, add them to the testsToRun!
     *****/
   val testsToRun = Seq(
-    ("OptionCollapseTest", optionCollapseTest _),
-    ("WordFrequencyTest", wordFrequencyTest _)
+              ("generateOdds", generateOddsTest _),
+              ("stringReverser", stringReverserTest _),
+               ("wordFrequency", wordFrequencyTest _),
+    ("OptionCollapseTest", optionCollapseTest _)
   )
 
   // BEGIN Tests
+  
   // here are some examples
   def optionCollapseTest(): Boolean = {
     val input: Seq[Option[Int]] =
@@ -87,12 +117,30 @@ object TestSuite {
   }
 
   /* TODO: Implement more tests, for testing each functions behavior! */
-
+  def generateOddsTest():Boolean = {
+    
+    val expected = List(3,5,7,9)
+    return CodeFun.generateOdds(2, 9) == expected
+    
+  }
+  
+   def stringReverserTest():Boolean = {
+    val expected = "DOG YM HO"
+    return CodeFun.stringReverser("OH MY GOD") == expected
+    
+  }
+   
   /**
     * Add the logic to execute all of the tests.
     * This function should print the name of the test and whether it passed or failed.
     */
-  def runAllTests(): Unit = {
-    throw new NotImplementedError()
+  def runAllTests(){
+    println(TestSuite.testsToRun)
+    //testsToRun.foreach { s <- println s. }
+    for ( onetest <- testsToRun){
+        val ret = onetest._2.apply();
+        val status = (if(ret) "SUCCEEDED" else "FAILED!!")
+        println("Unit Test for ->" + onetest._1 + ":"+ status )
+    }
   }
 }
